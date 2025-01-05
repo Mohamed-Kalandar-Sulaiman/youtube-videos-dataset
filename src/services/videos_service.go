@@ -17,11 +17,17 @@ func NewVideoService(videoRepo *repository.VideoRepository) *VideoService {
 	}
 }
 
-func (s *VideoService) GetAllVideos() ([]models.Video, error) {
-	videos, err := s.VideoRepo.GetVideos()
+func (s *VideoService) GetAllVideos(filters models.VideoFilterOptions) ([]models.Video,string,  error) {
+	videos, nextPageKey,  err := s.VideoRepo.GetFilteredVideos( filters)
+	
+
 	if err != nil {
 		log.Printf("Error in GetAllVideos: %v", err)
-		return nil, err
+		return nil, "", err
 	}
-	return videos, nil
+
+	if len(videos) == 0 {
+		videos = []models.Video{}
+	}
+	return videos,nextPageKey,  nil
 }
