@@ -36,8 +36,6 @@ func (p *PostgresDB) Connect() (*sql.DB, error) {
 	return db, nil
 }
 
-
-
 func (p *PostgresDB) Close() error {
 	if instance != nil {
 		log.Println("Closing PostgreSQL database connection")
@@ -52,3 +50,5 @@ func (p *PostgresDB) Close() error {
 	log.Println("No PostgreSQL database connection to close")
 	return nil
 }
+
+

@@ -5,6 +5,7 @@ import (
 
 	"github.com/Mohamed-Kalandar-Sulaiman/youtube-videos-dataset/src/config"
 	"github.com/Mohamed-Kalandar-Sulaiman/youtube-videos-dataset/src/database"
+	"github.com/Mohamed-Kalandar-Sulaiman/youtube-videos-dataset/src/repository"
 
 	fiber "github.com/gofiber/fiber/v2"
 )
@@ -20,7 +21,7 @@ func main() {
 		log.Fatalf("Error loading environment variables: %v", err)
 	}
 	postgresConfig := &database.PostgresDB{
-		Host:    config.Get("POSTGRES_HOST", "").(string),
+		Host:     config.Get("POSTGRES_HOST", "").(string),
 		Port:     config.Get("POSTGRES_PORT", 5432).(int),
 		User:     config.Get("POSTGRES_USER", "").(string),
 		Password: config.Get("POSTGRES_PASSWORD", "").(string),
@@ -32,12 +33,15 @@ func main() {
 		log.Fatal("Failed to establish a database connection")
 	}
 
-    log.Println(db.Stats())
+	log.Println(db.Stats())
 
 	log.Println("Database connected successfully !!!")
 
 	defer database.CloseDB()
-    database.CloseDB()
+	database.CloseDB()
+	videoRepo := repository.NewVideoRepository(db)
+
+	videoRepo.DB.Begin()
 	app := fiber.New()
 
 	if err != nil {

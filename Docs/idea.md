@@ -53,4 +53,7 @@
 
 # Decisions
 1. Use Fiber with Postgres
-2. 
+2. Postgres
+    - Read replicas ?
+    - Partition rows based on published_date
+    

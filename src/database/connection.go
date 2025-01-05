@@ -22,7 +22,7 @@ func GetDBInstance(db Database) *sql.DB {
 	defer mutex.Unlock()
 
 	if instance == nil {
-		instance = createConnectionWithRetry(db, 3, time.Second*2) 
+		instance = createConnectionWithRetry(db, 3, time.Second*2)
 	}
 	return instance
 }
@@ -44,7 +44,7 @@ func createConnectionWithRetry(db Database, retries int, backoff time.Duration) 
 		if i < retries {
 			log.Printf("Retrying in %v...\n", backoff)
 			time.Sleep(backoff)
-			backoff *= 2 
+			backoff *= 2
 		} else {
 			log.Fatalf("Failed to establish database connection after %d attempts", retries)
 		}
@@ -62,7 +62,7 @@ func CloseDB() {
 			log.Printf("Failed to close database connection: %v", err)
 		} else {
 			log.Println("Database connection closed successfully")
-			instance = nil 
+			instance = nil
 		}
 	}
 }
